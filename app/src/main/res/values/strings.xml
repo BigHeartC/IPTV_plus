@@ -1,0 +1,42 @@
+<resources>
+    <!--控件上固定字符 -->
+    <string name="app_name">IPTV+</string>
+    <string name="my_collections">我的收藏</string>
+    <string name="all_channel">全部频道</string>
+    <string name="danmu_switch">弹幕开关</string>
+    <string name="lock_screen">锁定屏幕</string>
+    <string name="launch_danmu">发射弹幕</string>
+
+    <string name="danmu_control">弹幕控制</string>
+    <string name="danmu_filter_by_pos">弹幕屏蔽</string>
+    <string name="danmu_top">顶部</string>
+    <string name="danmu_flow">滚动</string>
+    <string name="danmu_bottom">底部</string>
+    <string name="danmu_visitor">游客</string>
+    <string name="danmu_color">彩色</string>
+
+    <string name="danmu_text_scale">字号缩放</string>
+    <string name="danmu_shadow_square">阴影大小</string>
+    <string name="danmu_destiny">同屏弹幕数目</string>
+    <string name="danmu_speed">速度调节</string>
+    <string name="danmu_aphla">弹幕透明度</string>
+
+    <string name="danmu_filter">弹幕过滤</string>
+    <string name="filter_selected_users">屏蔽选中用户</string>
+
+    <!--控件上固定字符 -->
+
+
+    <string name="drawer_open">打开侧滑菜单</string>
+    <string name="drawer_close">关闭侧滑菜单</string>
+
+
+    <!-- 提示语-->
+    <string name="net_wrong">网络出错了哦</string>
+
+
+
+    <string name="has_no_collection">你还未收藏任何频道～\n右滑点击星号即可收藏 --></string>
+    <!-- 提示语-->
+
+</resources>

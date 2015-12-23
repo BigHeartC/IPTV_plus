@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_danmu_edit"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black"
+    android:orientation="vertical"
+    android:visibility="gone"
+    tools:visibility="gone">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_write_danmu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/ib_launch_danmu"
+            android:layout_toLeftOf="@+id/ib_launch_danmu"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:textColor="@android:color/white" />
+
+        <ImageButton
+            android:id="@+id/ib_launch_danmu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@android:drawable/ic_menu_send" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/iv_vv_big_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_text_format_white_36dp" />
+
+        <ImageView
+            android:id="@+id/iv_vv_small_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/ic_text_format_white_24dp" />
+
+        <ImageView
+            android:id="@+id/iv_vv_text_still_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_danmu_position_top_white_36dp" />
+
+        <ImageView
+            android:id="@+id/iv_vv_text_flow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/ic_danmu_poisition_center_white_36dp" />
+
+        <ImageView
+            android:id="@+id/iv_vv_text_still_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/ic_danmu_poisition_bottom_white_36dp" />
+
+        <ImageView
+            android:id="@+id/iv_vv_color_0"
+            android:layout_width="64px"
+            android:layout_height="64px"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:background="@android:color/white" />
+
+
+        <ImageView
+            android:id="@+id/iv_vv_color_1"
+            android:layout_width="64px"
+            android:layout_height="64px"
+            android:layout_marginLeft="3dp"
+            android:background="#ff0000" />
+
+        <ImageView
+            android:id="@+id/iv_vv_color_2"
+            android:layout_width="64px"
+            android:layout_height="64px"
+            android:layout_marginLeft="3dp"
+            android:background="#00ff00" />
+
+        <ImageView
+            android:id="@+id/iv_vv_color_3"
+            android:layout_width="64px"
+            android:layout_height="64px"
+            android:layout_marginLeft="3dp"
+            android:background="#ffff00" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
