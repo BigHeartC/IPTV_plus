@@ -10,48 +10,32 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.bigheart.byrtv.ByrTvApplication;
 import com.bigheart.byrtv.R;
 import com.bigheart.byrtv.data.sharedpreferences.DanmuPreferences;
 import com.bigheart.byrtv.ui.module.ChannelModule;
 import com.bigheart.byrtv.ui.presenter.MainActivityPresenter;
 import com.bigheart.byrtv.ui.presenter.TvLivePresenter;
 import com.bigheart.byrtv.ui.view.TvLiveActivityView;
+import com.bigheart.byrtv.ui.view.custom.ijkplayer.IjkVideoView;
 import com.bigheart.byrtv.util.ByrTvUtil;
 import com.bigheart.byrtv.util.LogUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
 
-import io.vov.vitamio.MediaPlayer;
-import io.vov.vitamio.Vitamio;
-import io.vov.vitamio.widget.MediaController;
-import io.vov.vitamio.widget.VideoView;
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
@@ -60,6 +44,8 @@ import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import tv.danmaku.ijk.media.player.IMediaPlayer;
+import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 
 /**
@@ -80,11 +66,11 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
     private int danmuEtTextSize = 0, danmuEtColorPos = 0, danmuEtPos = 0;
 
 
-    private VideoView mVideoView;
+    private IjkVideoView mVideoView;
     private RelativeLayout rlVvTop, rlVvBottom;
     private Button btLaunchDanmu, btLockScreen, btDanmuSwitch;
     private ImageView ivPlayOrPause, ivUnlockScreenLogo;
-    private TextView tvChannelName, tvBufferInfo;
+    private TextView tvChannelName, tvBufferInfo, tvAdjust;
 
     private IDanmakuView danmakuView;
     private DanmakuContext danmakuContext;
@@ -109,7 +95,6 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
     private LinearLayout llFilterUser;
 
     private TvLivePresenter presenter;
-    private MediaController mediaController;
 
 
     /**
@@ -130,7 +115,6 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
         //隐藏状态栏
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.layout_tv_live);
-        Vitamio.isInitialized(this);
         initUI();
         initData();
 
@@ -158,12 +142,19 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!mVideoView.isPlaying()) {
-            mVideoView.start();
-        }
         if (danmakuView != null && danmakuView.isPrepared() && danmakuView.isPaused()) {
             danmakuView.resume();
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mVideoView != null) {
+            mVideoView.pause();
+            ivPlayOrPause.setImageResource(R.drawable.ic_play_circle_fill_white_36dp);
+        }
+        IjkMediaPlayer.native_profileEnd();
     }
 
 
@@ -172,6 +163,7 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
         super.onDestroy();
         if (mVideoView != null) {
             mVideoView.stopPlayback();
+            mVideoView.release(true);
         }
         if (minBroadcast.isOrderedBroadcast()) {
             getApplicationContext().unregisterReceiver(minBroadcast);
@@ -190,6 +182,15 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
             danmakuView = null;
         }
     }
+
+    @Override
+    public void setAdjustViewContent(String content) {
+        if (!tvAdjust.isShown()) {
+            tvAdjust.setVisibility(View.VISIBLE);
+        }
+        tvAdjust.setText(content);
+    }
+
 
     @Override
     public void setDanmuEtTextSize(int size) {
@@ -268,7 +269,7 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
     }
 
     private void initUI() {
-        mVideoView = (VideoView) findViewById(R.id.vv_tv_live);
+        mVideoView = (IjkVideoView) findViewById(R.id.vv_tv_live);
         danmakuView = (IDanmakuView) findViewById(R.id.dmk_view_live);
 
 
@@ -283,6 +284,7 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
         findViewById(R.id.iv_vv_filter_user).setOnClickListener(mainCtlClickListener);
         //center
         tvBufferInfo = (TextView) findViewById(R.id.tv_vv_buffer_info);
+        tvAdjust = (TextView) findViewById(R.id.tv_vv_adjust);
         ivUnlockScreenLogo = (ImageView) findViewById(R.id.iv_vv_unlock_screen);
         ivUnlockScreenLogo.setOnClickListener(mainCtlClickListener);
         //bottom
@@ -378,43 +380,21 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
 //        Log.i(TV_LIVE_URI, channelUri + " " + channelUri.length());
         mVideoView.setVideoPath(channel.getUri());
 //        this.toast(channelUri);
-        mediaController = new MediaController(this);
-        mVideoView.setMediaController(mediaController);
-        mVideoView.setVideoQuality(MediaPlayer.VIDEOQUALITY_HIGH);
-//        mVideoView.requestFocus();
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+        mVideoView.setOnPreparedListener(new IMediaPlayer.OnPreparedListener() {
             @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.setPlaybackSpeed(1.0f);
-
-                //调整宽高
-                int videoH = mediaPlayer.getVideoHeight();
-                int videoW = mediaPlayer.getVideoWidth();
-                Log.i("TvLiveActivity video", videoH + " " + videoW);
-                if (videoH > ByrTvUtil.getScreenWidth() || videoW > ByrTvUtil.getScreenHeight()) {
-                    float wRatio = (float) videoW / (float) ByrTvUtil.getScreenWidth();
-                    float hRatio = (float) videoH / (float) ByrTvUtil.getScreenHeight();
-                    float ratio = Math.max(wRatio, hRatio);
-                    //获取缩放比例
-                    Log.i("TvLiveActivity ratio", ratio + "");
-                    videoW = (int) Math.ceil((float) videoW / ratio);
-                    videoH = (int) Math.ceil((float) videoH / ratio);
-                    mVideoView.setLayoutParams(new RelativeLayout.LayoutParams(videoW, videoH));
-                    Log.i("TvLiveActivity device", ByrTvUtil.getScreenHeight() + " " + ByrTvUtil.getScreenWidth());
-                    Log.i("TvLiveActivity change", videoH + " " + videoW);
-                }
-                mVideoView.setBufferSize(512 * 1024);
+            public void onPrepared(IMediaPlayer mediaPlayer) {
                 findViewById(R.id.clpb_vv_load_video).setVisibility(View.GONE);
                 ivPlayOrPause.setVisibility(View.VISIBLE);
+                mVideoView.start();
             }
         });
 
-        mVideoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+        mVideoView.setOnErrorListener(new IMediaPlayer.OnErrorListener() {
             @Override
-            public boolean onError(MediaPlayer mp, int what, int extra) {
-                // extra : https://github.com/yixia/VitamioBundle/wiki/ErrorCode
+            public boolean onError(IMediaPlayer mp, int what, int extra) {
+                LogUtil.d("onError", what + "");
                 findViewById(R.id.clpb_vv_load_video).setVisibility(View.GONE);
-                new AlertDialog.Builder(TvLiveActivity.this).setTitle("错误").setMessage("视频播放错误").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(TvLiveActivity.this).setTitle("错误").setMessage("视频播放出错！").setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         finish();
                     }
@@ -422,26 +402,22 @@ public class TvLiveActivity extends BaseActivity implements TvLiveActivityView {
                 return false;
             }
         });
-        mVideoView.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-            @Override
-            public void onBufferingUpdate(MediaPlayer mp, int percent) {
-                LogUtil.d("TvLiveActivity", percent + "%");
-                if (percent < 100) {
-                    if (tvBufferInfo.getVisibility() != View.VISIBLE) {
-                        tvBufferInfo.setVisibility(View.VISIBLE);
-                    }
-                    tvBufferInfo.setText("缓冲" + percent + "%");
-                } else {
-                    tvBufferInfo.setText("");
-                    tvBufferInfo.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
 
-        mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+        mVideoView.setOnInfoListener(new IMediaPlayer.OnInfoListener() {
             @Override
-            public boolean onInfo(MediaPlayer mp, int what, int extra) {
-//                LogUtil.d("TvLiveActivity info", what + " " + extra);
+            public boolean onInfo(IMediaPlayer mp, int what, int extra) {
+                switch (what) {
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        tvBufferInfo.setVisibility(View.VISIBLE);
+                        LogUtil.d("MEDIA_INFO_BUFFERING_START", extra + "");
+                        break;
+                    case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        tvBufferInfo.setVisibility(View.GONE);
+                        LogUtil.d("MEDIA_INFO_BUFFERING_END", extra + "");
+                        break;
+                    default:
+                        break;
+                }
                 return false;
             }
         });

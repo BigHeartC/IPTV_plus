@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
     defaultConfig {
         applicationId 'com.bigheart.byrtv'
-        minSdkVersion 11
-        targetSdkVersion 23
-        versionCode 4
-        versionName "1.0"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.versionCode
+        versionName rootProject.ext.versionName
     }
     buildTypes {
         release {
@@ -21,6 +21,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'debug-proguard-rules.pro'
         }
     }
+
+//    productFlavors {
+//        all32 { minSdkVersion 10 }
+//        all64 { minSdkVersion 21 }
+//        // armv5 {}
+//        // armv7a {}
+//        // arm64 { minSdkVersion 21 }
+//        // x86 {}
+//    }
+
     //为了解决部分第三方库重复打包了META-INF的问题
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
@@ -40,8 +50,23 @@ dependencies {
     compile 'com.android.support:support-v13:+'
     compile 'com.android.support:design:23.1.0'
     compile 'com.facebook.fresco:fresco:0.8.1'
-    //视频播放包
-    compile project(':vitamio')
     //弹幕库
     compile 'com.github.ctiao:dfm:0.3.9'
+    //视频播放包
+    compile project(':ijkplayer-java')
+    compile project(':ijkplayer-exo')
+    compile project(':ijkplayer-java')
+    compile project(':ijkplayer-exo')
+    compile project(':ijkplayer-armv5')
+    compile project(':ijkplayer-armv7a')
+    compile project(':ijkplayer-x86')
+
+//    all32Compile project(':ijkplayer-armv5')
+//    all32Compile project(':ijkplayer-armv7a')
+//    all32Compile project(':ijkplayer-x86')
+//
+//    all64Compile project(':ijkplayer-armv5')
+//    all64Compile project(':ijkplayer-armv7a')
+//    all64Compile project(':ijkplayer-arm64')
+//    all64Compile project(':ijkplayer-x86')
 }

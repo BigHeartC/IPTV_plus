@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/black">
 
-    <io.vov.vitamio.widget.VideoView
+    <com.bigheart.byrtv.ui.view.custom.ijkplayer.IjkVideoView
         android:id="@+id/vv_tv_live"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -103,11 +103,25 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:alpha="0.75"
-            android:background="#000000"
+            android:background="@android:color/black"
+            android:padding="5dp"
+            android:text="正在缓冲……"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_vv_adjust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:alpha="0.75"
+            android:background="@drawable/bg_round_rect_black"
+            android:gravity="center"
             android:padding="5dp"
             android:textColor="@android:color/white"
-            android:visibility="visible"
-            tools:text="1.13kb/s" />
+            android:visibility="gone"
+            tools:text="bababab" />
 
         <RelativeLayout
             android:id="@+id/rl_vv_bottom"
@@ -169,8 +183,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:paddingRight="15dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_pause_circle_fill_white_36dp" />
+                android:src="@drawable/ic_pause_circle_fill_white_36dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </RelativeLayout>

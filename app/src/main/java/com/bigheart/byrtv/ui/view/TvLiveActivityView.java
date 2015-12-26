@@ -45,4 +45,12 @@ public interface TvLiveActivityView {
      */
     void setDanmuSBProgress(int textScale, int speed, int alpha, int destiny);
 
+    /**
+     * 调节音量、亮度时显示当前值
+     *
+     * @param content 显示文字内容
+     */
+    void setAdjustViewContent(String content);
+
+
 }

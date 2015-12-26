@@ -1,1 +1,1 @@
-include ':app', ':vitamio'
+include ':app', ':ijkplayer-arm64', ':ijkplayer-armv5', ':ijkplayer-armv7a', ':ijkplayer-java', ':ijkplayer-exo', ':ijkplayer-x86'
