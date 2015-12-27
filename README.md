@@ -11,9 +11,9 @@
 >收藏频道
 
 ###应用截图
- ![image](https://github.com/BigHeartC/IPTV_plus/blob/master/drawer.jpg)
- ![image](https://github.com/BigHeartC/IPTV_plus/blob/master/nba.jpg)
- ![image](https://github.com/BigHeartC/IPTV_plus/blob/master/minyuezhaun.jpg)
+ ![image](https://github.com/BigHeartC/IPTV_plus/blob/master/pic_mainActivity.png.png)
+ ![image](https://github.com/BigHeartC/IPTV_plus/blob/master/pic_nba.jpg)
+ ![image](https://github.com/BigHeartC/IPTV_plus/blob/master/pic_minyuezhaun.jpg)
 
 
 ###License
