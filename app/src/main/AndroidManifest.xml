@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bigheart.byrtv">
 
-    <!-- 为了使用  可接受非v4包中的 FragmentPagerAdapter -->
-    <uses-sdk tools:overrideLibrary="android.support.v13" />
+    <uses-sdk tools:overrideLibrary="android.support.v13,tv.danmaku.ijk.media.player_arm64" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -36,7 +35,7 @@
         <activity
             android:name=".ui.view.activity.TvLiveActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="landscape" ></activity>
+            android:screenOrientation="landscape"></activity>
 
     </application>
 
