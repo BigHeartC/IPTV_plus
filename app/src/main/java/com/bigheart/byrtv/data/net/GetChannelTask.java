@@ -24,7 +24,7 @@ public class GetChannelTask extends Thread {
         netWorkRsp = rsp;
     }
 
-    private String strUrl = "http://tv.byr.cn/mobile/index.html?cdn=bupt";
+    private String strUrl = "https://tv.byr.cn/mobile/index.html?cdn=bupt";
 
     @Override
     public void run() {
@@ -35,9 +35,9 @@ public class GetChannelTask extends Thread {
             URLConnection connection = url.openConnection();
             HttpURLConnection conn = (HttpURLConnection) connection;
             conn.setRequestProperty("Accept", "application/json");
-            //conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36");
 
-            //conn.setRequestMethod("POST");// 设置请求方法为post
+            conn.setRequestMethod("GET");// 设置请求方法为get
             conn.setReadTimeout(5000);// 设置读取超时为5秒
             conn.setConnectTimeout(10000);// 设置连接网络超时为10秒
             conn.setDoOutput(true);
@@ -68,7 +68,7 @@ public class GetChannelTask extends Thread {
     private ArrayList<ChannelModule> parseStr2Channels(String str) {
         ArrayList<ChannelModule> channels = new ArrayList<>();
 
-        String obtainAllChannel = "href=\"http://.*?</a>";
+        String obtainAllChannel = "href=\"//.*?</a>";
         HashSet<String> hashSet = new HashSet<>();
         Pattern pattern = Pattern.compile(obtainAllChannel);
         Matcher m = pattern.matcher(str);
@@ -79,7 +79,7 @@ public class GetChannelTask extends Thread {
 //        System.out.println(hashSet.size() + "组");
 
 
-        String getUri = "http://.*m3u8";
+        String getUri = "//.*m3u8";
         String getName = ">.*</a>";
         Pattern uriPattern = Pattern.compile(getUri);
         Pattern namePattern = Pattern.compile(getName);
@@ -89,7 +89,7 @@ public class GetChannelTask extends Thread {
 
             m = uriPattern.matcher(tmpStr);
             if (m.find()) {
-                channel.setUri(m.group());
+                channel.setUri("http:" + m.group());
                 m = namePattern.matcher(tmpStr);
                 if (m.find()) {
                     channel.setChannelName(m.group().toString().substring(1, m.group().length() - 4));
