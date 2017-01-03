@@ -62,7 +62,7 @@ public class AllChannelPresenter extends Presenter {
 
     public ArrayList<ChannelModule> channelSort(ArrayList<ChannelModule> channels) {
 
-            if (!ByrTvApplication.isTryPullChannelFromNet()) {
+            if (!ByrTvApplication.isSucPullChannelFromNet()) {
                 //此次为从 数据库 中获取
                 Collections.sort(channels, new SortByPinYin());
             } else if (!HadUpdateData) {

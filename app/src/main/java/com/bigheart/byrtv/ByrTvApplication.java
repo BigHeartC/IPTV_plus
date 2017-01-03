@@ -7,7 +7,9 @@ import com.bigheart.byrtv.util.ByrTvUtil;
 import com.bigheart.byrtv.util.LogUtil;
 
 public class ByrTvApplication extends Application {
-    private static boolean isTryPullChannelFromNet = false;
+
+
+    private static boolean isSucPullChannelFromNet = false;
 
     @Override
     public void onCreate() {
@@ -18,8 +20,12 @@ public class ByrTvApplication extends Application {
     }
 
 
-    public static boolean isTryPullChannelFromNet() {
-        return isTryPullChannelFromNet;
+    public static boolean isSucPullChannelFromNet() {
+        return isSucPullChannelFromNet;
+    }
+
+    public static void setIsSucPullChannelFromNet(boolean isSucPullChannelFromNet) {
+        ByrTvApplication.isSucPullChannelFromNet = isSucPullChannelFromNet;
     }
 
 }

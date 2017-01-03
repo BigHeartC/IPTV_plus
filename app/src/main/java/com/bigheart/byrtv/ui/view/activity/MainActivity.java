@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity implements MainActivityView, Frag
         if (okFragCount == 2) {
             if (presenter == null)
                 presenter = new MainActivityPresenter(this, this, myCollectionFragment, channelFragment);
-            presenter.pullData();
+            presenter.pullData(true,true);
 //            Log.i("MainActivity", "pullData");
         }
     }
@@ -168,6 +168,11 @@ public class MainActivity extends BaseActivity implements MainActivityView, Frag
     @Override
     public void notifyMyCollectionFrg() {
         presenter.upDateMyCollectionFrg();
+    }
+
+    @Override
+    public void getChannelsFromNet() {
+        presenter.pullData(false, true);
     }
 
     @Override

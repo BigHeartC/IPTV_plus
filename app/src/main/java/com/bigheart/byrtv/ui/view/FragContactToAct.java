@@ -9,4 +9,6 @@ public interface FragContactToAct {
 
     void notifyMyCollectionFrg();
 
+    void getChannelsFromNet();
+
 }

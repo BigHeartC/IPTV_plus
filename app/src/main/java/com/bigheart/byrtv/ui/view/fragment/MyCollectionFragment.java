@@ -69,8 +69,7 @@ public class MyCollectionFragment extends Fragment implements MyCollectionView {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //只刷新在线人数，不刷新频道列表
-//                updateData(collectionChannels);
+                //不必更新
                 stopRefresh();
             }
         });

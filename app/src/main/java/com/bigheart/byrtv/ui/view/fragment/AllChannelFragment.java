@@ -78,7 +78,7 @@ public class AllChannelFragment extends Fragment implements AllChannelView {
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                stopRefresh();
+                allChannelFragContactToAct.getChannelsFromNet();
             }
         });
 

@@ -33,7 +33,7 @@ import java.util.Map;
 
 /**
  * 控制AllChannelFragment,MyCollectionFragment
- * <p/>
+ * <p>
  * Created by BigHeart on 15/12/8.
  */
 public class MainActivityPresenter extends Presenter {
@@ -60,7 +60,7 @@ public class MainActivityPresenter extends Presenter {
     }
 
 
-    public void pullData() {
+    public void pullData(boolean isFromSql, boolean isFromNet) {
 
         handler.post(new Runnable() {
             @Override
@@ -69,6 +69,19 @@ public class MainActivityPresenter extends Presenter {
                 channelView.startRefresh();
             }
         });
+
+
+        //一次打开中若 已成功从网页 获得频道列表则不再请求
+        if (ByrTvApplication.isSucPullChannelFromNet()) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    collectionView.stopRefresh();
+                    channelView.stopRefresh();
+                }
+            });
+            return;
+        }
 
 
         new GetChannelList(new ChannelsRsp() {
@@ -106,12 +119,12 @@ public class MainActivityPresenter extends Presenter {
                 allChannels = channels;
                 updateSqlChannel(channels);
                 shoveChannelsToMap(mapChannels, allChannels);
-
+                ByrTvApplication.setIsSucPullChannelFromNet(true);
                 LogUtil.i("All Channel net", channels.size() + " group");
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        collectionView.stopRefresh();//虽然还未获得人数
+                        collectionView.stopRefresh();
                         channelView.stopRefresh();
                         channelView.updateData(channels);
                     }
@@ -132,7 +145,7 @@ public class MainActivityPresenter extends Presenter {
                     }
                 });
             }
-        }).getChannels(true, true);
+        }).getChannels(isFromSql, isFromNet);
     }
 
     public static ChannelModule getAllChannelByName(String channelName) {
